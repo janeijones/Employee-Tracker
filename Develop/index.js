@@ -108,7 +108,10 @@ function askPrompts() {
                 });
                 break;
                 case 'VIEW EMPLOYEES':
-                    connection.query("SELECT * FROM employee")
+                    connection.query("SELECT * FROM employee JOIN role ON employee.role_id = role.id JOIN employee employee.manager_id = employee.id", (error, data) => {
+                        console.table(data);
+                        askPrompts();
+                    })
 
         }
 
