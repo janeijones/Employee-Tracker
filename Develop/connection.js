@@ -1,13 +1,13 @@
 const mysql = require('mysql');
 
-const connection = mysql.CreateConnection({
+const database = mysql.createConnection({
     host:'localhost',
     user: 'root',
     // port:3306,
     password: 'moz4m$',
-    dataBase: 'employee_db'
+    dataBase: 'employees'
 });
 
-connection.connect();
+database.connect();
 
-module.exports = connection; 
+module.exports = database; 
