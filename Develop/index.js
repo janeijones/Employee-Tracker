@@ -91,16 +91,16 @@ function askPrompts() {
                 break;
                 case 'ADD_EMPLOYEE':
                     // employee -> {first_name: 'Nei;, last_name: 'Jones', role_id: 2, manager_id: NULL}
-
-                    connection.query("SELECT name, id AS value FROM department", (error, departments) => {
+                        connection.query("SELECT name, id AS value FROM role", (error, departments) => {
 
                         inquirer.prompt([
-                            { name: 'title', message: 'What is the role title?' },
-                            { name: 'salary', message: 'What is the salary?' },
-                            { type: 'list', name: 'department_id', message: 'What is the department id?', choices: departments },
+                            { name: 'first_name', message: 'What is their first name?' },
+                            { name: 'last_name', message: 'What is their last name?' },
+                            { type: 'list', name: 'role_id', message: 'What is their role id?', choices: roles },
+                            { type: 'list', name: 'manager_id', message: 'What is their manager id?', choices: managers },
                         ])
-                            .then((role) => {
-                                connection.query("INSERT INTO role SET ?", role, () => {
+                            .then((employee) => {
+                                connection.query("INSERT INTO employee SET?", employee, () => {
                                     askPrompts();
                                 });
                             });
