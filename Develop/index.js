@@ -68,6 +68,19 @@ function askPrompts() {
                         console.table(data);
                     });
                 break;
+                case 'ADD_ROLE':
+                inquirer.prompt([
+                    {
+                        name: 'name',
+                        message: 'What is the name?'
+                    }
+                ])
+                    .then((role) => {
+                        connection.query("INSERT INTO role SET ?", role, () => {
+                            askPrompts();
+                        })
+                    })
+                
         }
 
     });
