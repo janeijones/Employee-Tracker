@@ -63,24 +63,27 @@ function askPrompts() {
                         })
                     })
                 break;
-                case 'VIEW_DEPARTMENTS':
-                    connection.query("SELECT * FROM department", (error, data) => {
-                        console.table(data);
-                    });
+            case 'VIEW_DEPARTMENTS':
+                connection.query("SELECT * FROM department", (error, data) => {
+                    console.table(data);
+                });
                 break;
-                case 'ADD_ROLE':
-                inquirer.prompt([
-                    {
-                        name: 'name',
-                        message: 'What is the name?'
-                    }
-                ])
-                    .then((role) => {
-                        connection.query("INSERT INTO role SET ?", role, () => {
-                            askPrompts();
-                        })
-                    })
-                
+            case 'ADD_ROLE':
+                connection.query("SELECT name, id AS value FROM department", (error, departments) => {
+
+                    inquirer.prompt([
+                        { name: 'title', message: 'What is the role title?' },
+                        { name: 'salary', message: 'What is the salary?' },
+                        { type: 'list', name: 'department_id', message: 'What is the department id?', choices: departments },
+                    ])
+                        .then((role) => {
+                            connection.query("INSERT INTO role SET ?", role, () => {
+                                askPrompts();
+                            });
+                        });
+                })
+                break;
+
         }
 
     });
@@ -95,5 +98,5 @@ function askPrompts() {
 
 // }
 
-askPrompts(); 
-//do a combanation of this for everything else 
+askPrompts();
+//do a combanation of this for everything else
