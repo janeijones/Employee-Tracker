@@ -20,7 +20,6 @@ Prompts will show in command-line
 Type and use arrow keys to execute the various employee tracker functions.
 To end the process, Select quit. 
 
-![giphy](./assets/Employee_Tracker.gif)
 <a href = "https://youtu.ve/biFgax_d8SE"> Youtube Video Link </a>
 
 ## License [![License](https://img.shields.io/badge/License-MIT-pink.svg)](https://opensource.org/licenses/MIT)
