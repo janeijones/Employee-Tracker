@@ -89,6 +89,9 @@ function askPrompts() {
                     askPrompts();
                 });
                 break;
+                case 'ADD_EMPLOYEE':
+                    // employee -> {first_name: 'Nei;, last_name: 'Jones', role_id: 2, manager_id: NULL}
+                break;
 
         }
 
