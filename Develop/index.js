@@ -1,4 +1,4 @@
-const database = require("./connection")
+const connection = require("./connection")
 
 const inquirer = require("inquirer")
 const fs = require("fs")
@@ -58,14 +58,19 @@ function askPrompts() {
                     }
                 ])
                     .then((department) => {
-                        database.query("INSERT INTO department SET ?", department, () => {
+                        connection.query("INSERT INTO department SET ?", department, () => {
                             askPrompts();
                         })
                     })
                 break;
+                case 'VIEW_DEPARTMENTS':
+                    connection.query("SELECT * FROM department", (error, data) => {
+                        console.table(data);
+                    });
+                break;
         }
 
-    })
+    });
 }
 
 
