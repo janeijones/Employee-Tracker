@@ -91,6 +91,20 @@ function askPrompts() {
                 break;
                 case 'ADD_EMPLOYEE':
                     // employee -> {first_name: 'Nei;, last_name: 'Jones', role_id: 2, manager_id: NULL}
+
+                    connection.query("SELECT name, id AS value FROM department", (error, departments) => {
+
+                        inquirer.prompt([
+                            { name: 'title', message: 'What is the role title?' },
+                            { name: 'salary', message: 'What is the salary?' },
+                            { type: 'list', name: 'department_id', message: 'What is the department id?', choices: departments },
+                        ])
+                            .then((role) => {
+                                connection.query("INSERT INTO role SET ?", role, () => {
+                                    askPrompts();
+                                });
+                            });
+                    })
                 break;
 
         }
