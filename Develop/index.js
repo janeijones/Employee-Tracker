@@ -94,7 +94,6 @@ function askPrompts() {
                             { type: 'list', name: 'manager_id', message: 'Who is their manager?', choices: [{ value: null, name: 'None' }].concat(managers || []) },
                         ])
                             .then((employee) => {
-                                console.log(employee);
                                 connection.query("INSERT INTO employee SET ?", employee, () => { //Add employee or manager into system with accompanying job role
                                     askPrompts();
                                 });
