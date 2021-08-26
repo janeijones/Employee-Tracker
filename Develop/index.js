@@ -1,14 +1,9 @@
 const connection = require("./connection")
 
 const inquirer = require("inquirer")
-const fs = require("fs")
-const mysql = require("mysql")
-
-
-
 
 function askPrompts() {
-    inquirer.prompt([
+    inquirer.prompt([ //List of questions to for operations with employee tracker
         {
             type: "list",
             name: "choice",
@@ -90,7 +85,7 @@ function askPrompts() {
                 });
             break;
             case 'ADD_EMPLOYEE':
-                connection.query("SELECT id AS value, first_name AS name FROM employee WHERE manager_id IS NULL", (error, managers)=> {
+                connection.query("SELECT id AS value, CONCAT(first_name, ' ', last_name) AS name FROM employee WHERE manager_id IS NULL", (error, managers)=> {
                 connection.query("SELECT id AS value, title AS name FROM role", (error, roles) => {
                         inquirer.prompt([
                             { name: 'first_name', message: 'What is their first name?' },
@@ -115,16 +110,29 @@ function askPrompts() {
                     manager.first_name AS manager_first_name,
                     manager.last_name AS manager_last_name
                     FROM employee 
-                    JOIN role ON employee.role_id = role.id 
-                    JOIN employee AS manager ON employee.manager_id = manager.id`, (error, data) => {
+                    LEFT JOIN role ON employee.role_id = role.id 
+                    LEFT JOIN employee AS manager ON employee.manager_id = manager.id`, (error, data) => {
                         console.table(data);
                         askPrompts();
                     });
                 break;
                 case 'UPDATE_EMPLOYEE_ROLE':
-
-                
+                    connection.query("SELECT id AS value, CONCAT(first_name, ' ', last_name) AS name FROM employee", (error, employees) => {
+                        connection.query("SELECT id AS value, title AS name FROM role", (error, roles) => {
+                        inquirer.prompt([
+                            { type: 'list', name: 'id', message: 'Select an employee', choices: employees },
+                            {type: 'list', name: 'role_id', message: 'Select a role', choices: roles }
+                        ]).then((answers) => {
+                            connection.query("UPDATE employee SET role_id = ? WHERE id = ?", [answers.role_id, answers.id], (error) => {
+                                askPrompts();
+                            })
+                        })
+                    })
+                });
                 break;
+                default:
+                    process.exit();
+                    break;
 
         }
 
