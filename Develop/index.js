@@ -90,7 +90,7 @@ function askPrompts() {
                 });
                 break;
             case 'ADD_EMPLOYEE':
-                connection.query("SELECT id AS value, first_name AS name AS value FROM employee WHERE manager_id IS NULL", (error, managers)=> {
+                connection.query("SELECT id AS value, first_name AS name FROM employee WHERE manager_id IS NULL", (error, managers)=> {
                 connection.query("SELECT id AS value, title AS name FROM role", (error, roles) => {
                         inquirer.prompt([
                             { name: 'first_name', message: 'What is their first name?' },
@@ -101,9 +101,6 @@ function askPrompts() {
                             .then((employee) => {
                                 console.log(employee);
                                 connection.query("INSERT INTO employee SET ?", employee, () => {
-                                   
-                                    // employee -> {first_name: 'Nei;, last_name: 'Jones', role_id: 2, manager_id: NULL}
-                                    // employee -> {first_name: 'Made;, last_name: 'Up', role_id: 2, manager_id: 2}
                                     askPrompts();
                                 });
                             });
