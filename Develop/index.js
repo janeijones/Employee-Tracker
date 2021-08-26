@@ -61,6 +61,7 @@ function askPrompts() {
             case 'VIEW_DEPARTMENTS': //View all departments
                 connection.query("SELECT * FROM department", (error, data) => {
                     console.table(data);
+                    askPrompts();
                 });
             break;
             case 'ADD_ROLE': //Add Role 
