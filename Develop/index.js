@@ -83,6 +83,12 @@ function askPrompts() {
                         });
                 })
                 break;
+                case 'VIEW_ROLES':
+                connection.query("SELECT * FROM role JOIN department ON role.department_id", (error, data) => {
+                    console.table(data);
+                    askPrompts();
+                });
+                break;
 
         }
 
