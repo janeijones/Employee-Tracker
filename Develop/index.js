@@ -90,18 +90,18 @@ function askPrompts() {
                 });
                 break;
             case 'ADD_EMPLOYEE':
-                connection.query("SELECT id AS value, first_name AS name AS value FROM employee WHERE manager_id = NULL", (error, managers) => {
-                    
-                    connection.query("SELECT name, id AS value FROM role", (error, departments) => {
-
+                connection.query("SELECT id AS value, first_name AS name AS value FROM employee WHERE manager_id IS NULL", (error, managers)=> {
+                connection.query("SELECT id AS value, title AS name FROM role", (error, roles) => {
                         inquirer.prompt([
                             { name: 'first_name', message: 'What is their first name?' },
                             { name: 'last_name', message: 'What is their last name?' },
-                            { type: 'list', name: 'role_id', message: 'What is their role id?', choices: roles },
-                            { type: 'list', name: 'manager_id', message: 'What is their manager id?', choices: managers },
+                            { type: 'list', name: 'role_id', message: 'What is their role?', choices: roles },
+                            { type: 'list', name: 'manager_id', message: 'Who is their manager?', choices: [{ value: null, name: 'None' }].concat(managers || []) },
                         ])
                             .then((employee) => {
-                                connection.query("INSERT INTO employee SET?", employee, () => {
+                                console.log(employee);
+                                connection.query("INSERT INTO employee SET ?", employee, () => {
+                                   
                                     // employee -> {first_name: 'Nei;, last_name: 'Jones', role_id: 2, manager_id: NULL}
                                     // employee -> {first_name: 'Made;, last_name: 'Up', role_id: 2, manager_id: 2}
                                     askPrompts();
@@ -110,6 +110,8 @@ function askPrompts() {
                     });
                 });
                 break;
+                case 'VIEW EMPLOYEES':
+                    connection.query("SELECT * FROM employee")
 
         }
 
