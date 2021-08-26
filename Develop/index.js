@@ -83,31 +83,33 @@ function askPrompts() {
                         });
                 })
                 break;
-                case 'VIEW_ROLES':
+            case 'VIEW_ROLES':
                 connection.query("SELECT title, salary, department.name AS department_name FROM role JOIN department ON role.department_id = department.id", (error, data) => {
                     console.table(data);
                     askPrompts();
                 });
                 break;
-                case 'ADD_EMPLOYEE':
-                    // employee -> {first_name: 'Nei;, last_name: 'Jones', role_id: 2, manager_id: NULL}
-                        connection.query("SELECT name, id AS value FROM role", (error, departments) => {
+            case 'ADD_EMPLOYEE':
+                connection.query("SELECT id AS value, first_name AS name AS value FROM employee WHERE manager_id = NULL", (error, managers) =>{
+            });
+    // employee -> {first_name: 'Nei;, last_name: 'Jones', role_id: 2, manager_id: NULL}
+    connection.query("SELECT name, id AS value FROM role", (error, departments) => {
 
-                        inquirer.prompt([
-                            { name: 'first_name', message: 'What is their first name?' },
-                            { name: 'last_name', message: 'What is their last name?' },
-                            { type: 'list', name: 'role_id', message: 'What is their role id?', choices: roles },
-                            { type: 'list', name: 'manager_id', message: 'What is their manager id?', choices: managers },
-                        ])
-                            .then((employee) => {
-                                connection.query("INSERT INTO employee SET?", employee, () => {
-                                    askPrompts();
-                                });
-                            });
-                    })
-                break;
+        inquirer.prompt([
+            { name: 'first_name', message: 'What is their first name?' },
+            { name: 'last_name', message: 'What is their last name?' },
+            { type: 'list', name: 'role_id', message: 'What is their role id?', choices: roles },
+            { type: 'list', name: 'manager_id', message: 'What is their manager id?', choices: managers },
+        ])
+            .then((employee) => {
+                connection.query("INSERT INTO employee SET?", employee, () => {
+                    askPrompts();
+                });
+            });
+    })
+    break;
 
-        }
+}
 
     });
 }
