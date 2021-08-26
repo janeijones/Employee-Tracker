@@ -62,12 +62,12 @@ function askPrompts() {
                             askPrompts();
                         })
                     })
-                break;
+            break;
             case 'VIEW_DEPARTMENTS':
                 connection.query("SELECT * FROM department", (error, data) => {
                     console.table(data);
                 });
-                break;
+            break;
             case 'ADD_ROLE':
                 connection.query("SELECT name, id AS value FROM department", (error, departments) => {
 
@@ -88,7 +88,7 @@ function askPrompts() {
                     console.table(data);
                     askPrompts();
                 });
-                break;
+            break;
             case 'ADD_EMPLOYEE':
                 connection.query("SELECT id AS value, first_name AS name FROM employee WHERE manager_id IS NULL", (error, managers)=> {
                 connection.query("SELECT id AS value, title AS name FROM role", (error, roles) => {
@@ -107,11 +107,24 @@ function askPrompts() {
                     });
                 });
                 break;
-                case 'VIEW EMPLOYEES':
-                    connection.query("SELECT * FROM employee JOIN role ON employee.role_id = role.id JOIN employee employee.manager_id = employee.id", (error, data) => {
+                case 'VIEW_EMPLOYEES':
+                    connection.query(`SELECT employee.first_name,
+                    employee.last_name,
+                    role.title,
+                    role.salary,
+                    manager.first_name AS manager_first_name,
+                    manager.last_name AS manager_last_name
+                    FROM employee 
+                    JOIN role ON employee.role_id = role.id 
+                    JOIN employee AS manager ON employee.manager_id = manager.id`, (error, data) => {
                         console.table(data);
                         askPrompts();
-                    })
+                    });
+                break;
+                case 'UPDATE_EMPLOYEE_ROLE':
+
+                
+                break;
 
         }
 
