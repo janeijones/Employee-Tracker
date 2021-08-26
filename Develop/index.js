@@ -45,7 +45,7 @@ function askPrompts() {
         }
     ]).then((answers) => {
         switch (answers.choice) {
-            case 'ADD_DEPARTMENT':
+            case 'ADD_DEPARTMENT': //Department added into Employee Tracker
                 inquirer.prompt([
                     {
                         name: 'name',
@@ -53,18 +53,18 @@ function askPrompts() {
                     }
                 ])
                     .then((department) => {
-                        connection.query("INSERT INTO department SET ?", department, () => {
+                        connection.query("INSERT INTO department SET ?", department, () => { //Department added into 'Departments'
                             askPrompts();
                         })
                     })
             break;
-            case 'VIEW_DEPARTMENTS':
+            case 'VIEW_DEPARTMENTS': //View all departments
                 connection.query("SELECT * FROM department", (error, data) => {
                     console.table(data);
                 });
             break;
-            case 'ADD_ROLE':
-                connection.query("SELECT name, id AS value FROM department", (error, departments) => {
+            case 'ADD_ROLE': //Add Role 
+                connection.query("SELECT name, id AS value FROM department", (error, departments) => { 
 
                     inquirer.prompt([
                         { name: 'title', message: 'What is the role title?' },
@@ -72,19 +72,19 @@ function askPrompts() {
                         { type: 'list', name: 'department_id', message: 'What is the department id?', choices: departments },
                     ])
                         .then((role) => {
-                            connection.query("INSERT INTO role SET ?", role, () => {
+                            connection.query("INSERT INTO role SET ?", role, () => {  //Add job role into a department
                                 askPrompts();
                             });
                         });
                 })
                 break;
-            case 'VIEW_ROLES':
+            case 'VIEW_ROLES': //view all roles with salary and accompanying department name
                 connection.query("SELECT title, salary, department.name AS department_name FROM role JOIN department ON role.department_id = department.id", (error, data) => {
                     console.table(data);
                     askPrompts();
                 });
             break;
-            case 'ADD_EMPLOYEE':
+            case 'ADD_EMPLOYEE': 
                 connection.query("SELECT id AS value, CONCAT(first_name, ' ', last_name) AS name FROM employee WHERE manager_id IS NULL", (error, managers)=> {
                 connection.query("SELECT id AS value, title AS name FROM role", (error, roles) => {
                         inquirer.prompt([
@@ -95,14 +95,14 @@ function askPrompts() {
                         ])
                             .then((employee) => {
                                 console.log(employee);
-                                connection.query("INSERT INTO employee SET ?", employee, () => {
+                                connection.query("INSERT INTO employee SET ?", employee, () => { //Add employee or manager into system with accompanying job role
                                     askPrompts();
                                 });
                             });
                     });
                 });
                 break;
-                case 'VIEW_EMPLOYEES':
+                case 'VIEW_EMPLOYEES': //view all employees, manager and non manager
                     connection.query(`SELECT employee.first_name,
                     employee.last_name,
                     role.title,
@@ -116,7 +116,7 @@ function askPrompts() {
                         askPrompts();
                     });
                 break;
-                case 'UPDATE_EMPLOYEE_ROLE':
+                case 'UPDATE_EMPLOYEE_ROLE': //update an employee role from list of employees and list of roles
                     connection.query("SELECT id AS value, CONCAT(first_name, ' ', last_name) AS name FROM employee", (error, employees) => {
                         connection.query("SELECT id AS value, title AS name FROM role", (error, roles) => {
                         inquirer.prompt([
